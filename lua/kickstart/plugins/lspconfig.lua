@@ -145,20 +145,26 @@ return {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
       local util = require 'lspconfig.util'
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                flake8 = { enabled = true },
+                pycodestyle = { enabled = false },
+                pyflakes = { enabled = false },
+                pylint = { enabled = false },
+                mccabe = { enabled = true },
+              },
+            },
+          },
+        },
+
         tsserver = {
-          init_options = { hostInfo = 'neovim' },
           cmd = { 'typescript-language-server', '--stdio' },
           filetypes = {
             'javascript',
@@ -168,8 +174,11 @@ return {
             'typescriptreact',
             'typescript.tsx',
           },
-          root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git'),
-          single_file_support = true,
+          settings = {
+            root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git'),
+            single_file_support = true,
+            init_options = { hostInfo = 'neovim' },
+          },
         },
         --
 
