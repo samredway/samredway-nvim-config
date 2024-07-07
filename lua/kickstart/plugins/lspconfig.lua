@@ -159,6 +159,10 @@ return {
                 pyflakes = { enabled = false },
                 pylint = { enabled = false },
                 mccabe = { enabled = true },
+                -- Ensure other formatting-related plugins are disabled
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                black = { enabled = false },
               },
             },
           },
