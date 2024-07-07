@@ -168,22 +168,7 @@ return {
           },
         },
 
-        tsserver = {
-          cmd = { 'typescript-language-server', '--stdio' },
-          filetypes = {
-            'javascript',
-            'javascriptreact',
-            'javascript.jsx',
-            'typescript',
-            'typescriptreact',
-            'typescript.tsx',
-          },
-          settings = {
-            root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git'),
-            single_file_support = true,
-            init_options = { hostInfo = 'neovim' },
-          },
-        },
+        tsserver = {},
         --
 
         lua_ls = {
