@@ -8,7 +8,16 @@ return {
     local ft = require 'guard.filetype'
 
     -- Assuming you have guard-collection
-    ft('python'):lint 'mypy'
+    ft('python'):fmt('black'):lint 'mypy'
+    require('mason').setup()
+
+    -- You can add other tools here that you want Mason to install
+    -- for you, so that they are available from within Neovim.
+    local ensure_installed = {
+      'black',
+      'mypy',
+    }
+    require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
     -- Call setup() LAST!
     require('guard').setup {
