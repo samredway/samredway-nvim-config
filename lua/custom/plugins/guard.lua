@@ -11,11 +11,14 @@ return {
     ft('python'):fmt('black'):lint 'mypy'
     require('mason').setup()
 
+    ft('typescript,javascript,typescriptreact'):fmt 'prettier'
+
     -- You can add other tools here that you want Mason to install
     -- for you, so that they are available from within Neovim.
     local ensure_installed = {
       'black',
       'mypy',
+      'prettier',
     }
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
