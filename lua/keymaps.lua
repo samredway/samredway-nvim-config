@@ -4,6 +4,9 @@
 -- Netrw
 vim.keymap.set('n', '<leader>pv', '<cmd>Ex<cr>', {})
 
+-- V all
+vim.keymap.set('n', '<leader>va', 'gg0vG$', {})
+
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
