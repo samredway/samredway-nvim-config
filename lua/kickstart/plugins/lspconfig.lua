@@ -148,7 +148,6 @@ return {
 
       local util = require 'lspconfig.util'
       local servers = {
-        -- clangd = {},
         -- gopls = {},
         pylsp = {
           settings = {
@@ -168,6 +167,7 @@ return {
           },
         },
         terraformls = {},
+        clangd = {},
         tsserver = {},
         lua_ls = {
           settings = {
