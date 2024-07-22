@@ -3,7 +3,7 @@ return {
   dependencies = {
     'nvimdev/guard-collection',
     'williamboman/mason.nvim',
-    'williamboman/mason-tool-installer.nvim',
+    'WholsSethDaniel/mason-tool-installer.nvim',
   },
   config = function()
     local ft = require 'guard.filetype'
