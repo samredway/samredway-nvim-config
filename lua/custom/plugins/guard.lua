@@ -3,13 +3,10 @@ return {
   dependencies = {
     'nvimdev/guard-collection',
     'williamboman/mason.nvim',
-    'WholsSethDaniel/mason-tool-installer.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
   },
   config = function()
     local ft = require 'guard.filetype'
-
-    -- Ensure Mason is correctly set up with the tools we need
-    require('mason').setup()
 
     -- Define the formatters and linters
     ft('python'):fmt('black'):lint 'mypy'
