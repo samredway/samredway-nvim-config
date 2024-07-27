@@ -7,6 +7,10 @@ vim.keymap.set('n', '<leader>pv', '<cmd>Ex<cr>', {})
 -- V all
 vim.keymap.set('n', '<leader>va', 'gg0vG$', {})
 
+-- Scoll down and up
+vim.keymap.set('n', '<C-d>', '<C-d>zz', {})
+vim.keymap.set('n', '<C-u>', '<C-u>zz', {})
+
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
