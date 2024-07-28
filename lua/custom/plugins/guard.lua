@@ -9,8 +9,9 @@ return {
     local ft = require 'guard.filetype'
 
     -- Define the formatters and linters
-    ft('python'):fmt('black'):lint 'mypy'
+    ft('c'):fmt 'clang-format'
     ft('typescript,javascript,typescriptreact'):fmt 'prettier'
+    ft('python'):fmt('black'):lint 'mypy'
 
     -- Ensure Mason installs the required tools
     local ensure_installed = {
