@@ -9,7 +9,6 @@ return {
     local ft = require 'guard.filetype'
 
     -- Define the formatters and linters
-    ft('c'):fmt 'clang-format'
     ft('typescript,javascript,typescriptreact'):fmt 'prettier'
     ft('python'):fmt('black'):lint 'mypy'
 
