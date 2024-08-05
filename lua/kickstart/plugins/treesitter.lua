@@ -6,6 +6,7 @@ return {
       ensure_installed = {
         'bash',
         'c',
+        'cpp',
         'css',
         'diff',
         'gitignore',
@@ -19,6 +20,7 @@ return {
         'vim',
         'vimdoc',
         'python',
+        'rust',
         'tsx',
         'typescript',
         'yaml',

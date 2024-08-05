@@ -137,6 +137,14 @@ return {
         terraformls = {},
         clangd = {},
         tsserver = {},
+        rust_analyzer = {
+          server = {
+            path = '~/.cargo/bin/rust-analyzer',
+          },
+          cargo = {
+            allFeatures = true,
+          },
+        },
         lua_ls = {
           settings = {
             Lua = {
