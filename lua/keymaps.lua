@@ -7,6 +7,9 @@ vim.keymap.set('n', '<leader>pv', '<cmd>Ex<cr>', {})
 -- V all
 vim.keymap.set('n', '<leader>va', 'gg0vG$', {})
 
+-- Delete all buffers
+vim.keymap.set('n', '<leader>bd', '<cmd>%bd|e#<cr>', {})
+
 -- Scoll down and up
 vim.keymap.set('n', '<C-d>', '<C-d>zz', {})
 vim.keymap.set('n', '<C-u>', '<C-u>zz', {})
