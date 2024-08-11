@@ -25,6 +25,7 @@ require('lazy').setup({
   require '/plugins/mini',
   require '/plugins/treesitter',
   require '/plugins/guard',
+  require '/plugins/markdown-preview',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
