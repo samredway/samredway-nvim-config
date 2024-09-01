@@ -1,4 +1,4 @@
--- [[ Setting options ]]
+
 -- See `:help vim.opt`
 --For more options, you can see `:help option-list`
 
@@ -55,5 +55,6 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
--- set default tab behaviour
-vim.o.tabstop = 4 -- A TAB character looks like 4 spaces
+-- Netrw settings (hide banner and use tree view by default)
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
