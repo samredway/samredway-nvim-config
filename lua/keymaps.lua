@@ -2,7 +2,10 @@
 --  See `:help vim.keymap.set()`
 
 -- Netrw
-vim.keymap.set('n', '<leader>pv', '<cmd>Ex<cr>', {})
+-- vim.keymap.set('n', '<leader>pv', '<cmd>Ex<cr>', {})
+
+-- NvimTree
+vim.keymap.set('n', '<leader>pv', '<cmd>NvimTreeToggle<cr>', {})
 
 -- V all
 vim.keymap.set('n', '<leader>va', 'gg0vG$', {})
