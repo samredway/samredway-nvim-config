@@ -12,6 +12,8 @@ return {
     ft('typescript,javascript,typescriptreact'):fmt 'prettier'
     ft('python'):fmt('black'):lint 'mypy'
     ft('go'):fmt('gofmt')
+    ft('cpp'):fmt('clang-format')
+
     -- Ensure Mason installs the required tools
     local ensure_installed = {
       'black',
