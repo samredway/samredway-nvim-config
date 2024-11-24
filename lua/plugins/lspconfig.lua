@@ -119,7 +119,7 @@ return {
 
       local servers = {
         -- uncomment for Go
-        -- gopls = {},
+        gopls = {},
         pylsp = {
           settings = {
             pylsp = {
