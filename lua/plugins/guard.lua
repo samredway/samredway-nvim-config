@@ -1,17 +1,14 @@
 return {
   'nvimdev/guard.nvim',
-  dependencies = {
-    'nvimdev/guard-collection',
-    'williamboman/mason.nvim',
-    'WhoIsSethDaniel/mason-tool-installer.nvim',
-  },
-  config = function()
+    dependencies = {
+        "nvimdev/guard-collection",
+    },
+    config = function()
     local ft = require 'guard.filetype'
 
     -- Define the formatters and linters
     ft('typescript,javascript,typescriptreact'):fmt 'prettier'
     ft('python'):fmt('black'):lint 'mypy'
-    -- Uncomment for go formatting
     ft('go'):fmt('gofmt')
     ft('cpp'):fmt('clang-format')
 
@@ -24,14 +21,18 @@ return {
       ensure_installed = ensure_installed,
     }
 
-    -- Call Guard setup LAST!
-    require('guard').setup {
-      -- Choose to format on every write to a buffer
+   -- change this anywhere in your config (or not), these are the defaults
+  vim.g.guard_config = {
+      -- format on write to buffer
       fmt_on_save = true,
-      -- Use lsp if no formatter was defined for this filetype
+      -- use lsp if no formatter was defined for this filetype
       lsp_as_default_formatter = false,
-      -- You can disable auto save on format if desired
-      -- save_on_fmt = false,
-    }
+      -- whether or not to save the buffer after formatting
+      save_on_fmt = true,
+      -- automatic linting
+      auto_lint = true,
+      -- how frequently can linters be called
+      lint_interval = 500
+  }
   end,
 }

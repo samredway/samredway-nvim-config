@@ -118,7 +118,6 @@ return {
       -- For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 
       local servers = {
-        -- uncomment for Go
         gopls = {},
         pylsp = {
           settings = {
@@ -137,7 +136,7 @@ return {
         },
         terraformls = {},
         clangd = {},
-        tsserver = {},
+        ts_ls = {},
         rust_analyzer = {
           server = {
             path = '~/.cargo/bin/rust-analyzer',
@@ -173,13 +172,16 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      -- Mason setup for LSP configuration
       require('mason-lspconfig').setup {
+        ensure_installed = ensure_installed,  -- Ensures the listed LSP servers are installed
+        automatic_installation = true,        -- Automatically install missing servers
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
+            -- certain features of an LSP (for example, turning off formatting for tsserver now ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
@@ -188,4 +190,3 @@ return {
     end,
   },
 }
--- vim: ts=2 sts=2 sw=2 et
