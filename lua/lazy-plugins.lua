@@ -27,7 +27,7 @@ require('lazy').setup({
   require '/plugins/guard',
   require '/plugins/markdown-preview',
   -- some plugins I have config for but dont really use
-  -- require '/plugins/nvim-tree',
+  require '/plugins/nvim-tree',
   -- require '/plugins/avante-ai',
 }, {
   ui = {
