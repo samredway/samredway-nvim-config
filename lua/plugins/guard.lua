@@ -6,19 +6,12 @@ return {
   config = function()
     local ft = require 'guard.filetype'
 
-    local terraform_fmt = {
-      cmd = 'terraform',
-      args = { 'fmt'},
-      stdin = true,
-    }
-
     ft('typescript,javascript,typescriptreact'):fmt 'prettier'
     ft('python')
       :fmt('black')
       :fmt('isort')
       :lint('flake8')
       :lint('mypy')
-    ft('terraform'):fmt(terraform_fmt)
     ft('go'):fmt('gofmt')
     ft('cpp'):fmt('clang-format')
 
