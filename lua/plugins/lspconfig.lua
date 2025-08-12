@@ -1,10 +1,11 @@
 return {
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
+    event = 'VeryLazy',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
-      'williamboman/mason-lspconfig.nvim',
+      { 'mason-org/mason.nvim', cmd = { 'Mason' }, opts = {} },
+      { 'mason-org/mason-lspconfig.nvim', opts = {} },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -15,7 +16,20 @@ return {
       -- used for completion, annotations and signatures of Neovim apis
       { 'folke/neodev.nvim', opts = {} },
     },
+
     config = function()
+      require('java').setup {
+        jdk = { auto_install = false },
+      }
+      require('lspconfig').jdtls.setup {
+        {
+          handlers = {
+            -- By assigning an empty function, you can remove the notifications
+            -- printed to the cmd
+            ['$/progress'] = function(_, result, ctx) end,
+          },
+        },
+      }
       -- LSP provides Neovim with features like:
       --  - Go to definition
       --  - Find references
@@ -157,8 +171,6 @@ return {
       --  other tools, you can run
       --    :Mason
       --
-      --  You can press `g?` for help in this menu.
-      require('mason').setup()
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.

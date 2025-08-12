@@ -14,6 +14,11 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
+  {
+    'nvim-java/nvim-java',
+    lazy = true,
+  },
+
   -- load plugins
   require '/plugins/gitsigns',
   require '/plugins/which-key',
