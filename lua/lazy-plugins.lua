@@ -16,6 +16,11 @@ require('lazy').setup({
 
   {
     'nvim-java/nvim-java',
+    opts = {
+      jdtls = {
+        dap = { enabled = false },  -- <- stops the startup DAP call, workaround to bug
+      },
+    },
     lazy = true,
   },
 

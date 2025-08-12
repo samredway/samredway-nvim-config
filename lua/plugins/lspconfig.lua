@@ -17,10 +17,7 @@ return {
       { 'folke/neodev.nvim', opts = {} },
     },
 
-    config = function()
-      require('java').setup {
-        jdk = { auto_install = false },
-      }
+    config = function() 
       require('lspconfig').jdtls.setup {
         {
           handlers = {
