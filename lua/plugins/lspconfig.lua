@@ -17,16 +17,7 @@ return {
       { 'folke/neodev.nvim', opts = {} },
     },
 
-    config = function() 
-      require('lspconfig').jdtls.setup {
-        {
-          handlers = {
-            -- By assigning an empty function, you can remove the notifications
-            -- printed to the cmd
-            ['$/progress'] = function(_, result, ctx) end,
-          },
-        },
-      }
+    config = function()
       -- LSP provides Neovim with features like:
       --  - Go to definition
       --  - Find references

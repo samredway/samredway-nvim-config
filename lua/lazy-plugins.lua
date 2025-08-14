@@ -14,16 +14,6 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
-  {
-    'nvim-java/nvim-java',
-    opts = {
-      jdtls = {
-        dap = { enabled = false },  -- <- stops the startup DAP call, workaround to bug
-      },
-    },
-    lazy = true,
-  },
-
   -- load plugins
   require '/plugins/gitsigns',
   require '/plugins/which-key',
