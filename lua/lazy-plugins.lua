@@ -18,6 +18,7 @@ require('lazy').setup({
   require '/plugins/gitsigns',
   require '/plugins/which-key',
   require '/plugins/telescope',
+  require '/plugins/mason-tools',
   require '/plugins/lspconfig',
   require '/plugins/cmp',
   require '/plugins/tokyonight',
