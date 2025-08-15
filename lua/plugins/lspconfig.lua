@@ -1,9 +1,11 @@
 return {
   { -- lsp configuration & plugins
     'neovim/nvim-lspconfig',
+    commit = "4da7247b2b348b4f6cade30a7a7fcb299879d275",
     dependencies = {
       -- note using `opts = {}` will auto call setup
-      { 'mason-org/mason-lspconfig.nvim' },
+      { 'mason-org/mason-lspconfig.nvim',
+        commit = "7f0bf635082bb9b7d2b37766054526a6ccafdb85" },
  
 
       -- useful status updates for lsp.
