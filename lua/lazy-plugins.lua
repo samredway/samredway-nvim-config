@@ -27,6 +27,7 @@ require('lazy').setup({
   require '/plugins/treesitter',
   require '/plugins/markdown-preview',
   require '/plugins/nvim-tree',
+  require '/plugins/guard',
 
   -- Java LSP
   {
