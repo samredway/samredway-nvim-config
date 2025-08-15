@@ -8,7 +8,10 @@ return {
   opts = {},
   config = function()
     local ensure = {
-      'black', 'isort', 'flake8', 'mypy', 'prettier', 'jdtls'
+      'black', 'isort', 'flake8', 'prettier', 'jdtls'
+      -- never install mypy with mason. If guard cannot find in mason it will
+      -- look next for what it can access on your terminal and if you venv is
+      -- activated that will be your venv mypy
     }
 
     require('mason').setup()

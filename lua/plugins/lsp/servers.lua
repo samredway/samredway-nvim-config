@@ -23,7 +23,7 @@ return {
           yapf = { enabled = false },
           autopep8 = { enabled = false },
           pydocstyle = { enabled = false },
-          flake8 = { enabled = false },
+          flake8 = { enabled = true },
         }
       }
     }
