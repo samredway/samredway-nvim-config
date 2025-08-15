@@ -7,42 +7,49 @@ return {
  
 
       -- useful status updates for lsp.
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
 
       -- `neodev` configures lua lsp for your neovim config, runtime and plugins
       -- used for completion, annotations and signatures of neovim apis
-      { 'folke/neodev.nvim', opts = {} },
+       'folke/neodev.nvim',
+       'mfussenegger/nvim-lint',
+       'mhartington/formatter.nvim'
     },
 
     config = function()
-      vim.api.nvim_create_autocmd('lspattach', require('plugins.lsp.on-attach'))
+      -- Setup up commands etc
+      local on_attach = require('plugins.lsp.on-attach')
 
-      -- lsp servers and clients are able to communicate to each other what features they support.
-      --  by default, neovim doesn't support everything that is in the lsp specification.
-      --  when you add nvim-cmp, luasnip, etc. neovim now has *more* capabilities.
-      --  so, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+      -- Server configs are in the lsp/servers file
+      local servers = require('plugins.lsp.servers')
+
+      -- Setup neovim lua configuration
+      require("neodev").setup({
+          library = { plugins = { "neotest" }, types = true },
+      })
+
+      -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-      -- load in the enabled language servers. to adde remove servers edit the file
-      -- lsp.servers
-      local servers = require('plugins.lsp.servers') 
+      -- Ensure the servers above are installed
+      local mason_lspconfig = require 'mason-lspconfig'
 
-      -- you can add other tools here that you want mason to install
-      -- for you, so that they are available from within neovim.
-      require('mason-lspconfig').setup {
-        automatic_installation = true,  -- automatically install missing servers
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- this handles overriding only values explicitly passed
-            -- by the server configuration above. useful when disabling
-            -- certain features of an lsp (for example, turning off formatting for tsserver now ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+      mason_lspconfig.setup {
+          automatic_enable = false,
+          ensure_installed = vim.tbl_keys(servers),
       }
-    end,
-  },
+
+      local lspconfig = require("lspconfig")
+ 
+      for server_name, config in pairs(servers) do
+          lspconfig[server_name].setup {
+          capabilities = capabilities,
+          on_attach = on_attach,
+          settings = config.settings,
+          filetypes = config.filetypes,
+        }
+      end
+    end
+  }
 }

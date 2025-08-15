@@ -12,16 +12,21 @@ return {
   terraformls = {},
   clangd = {},
   ts_ls = {},
-  pyright = {
+  pylsp = {
     settings = {
-      python = {
-        analysis = {
-          autoSearchPaths = true,
-          useLibraryCodeForTypes = true,
-          typeCheckingMode = "off",
-        },
-      },
-    },
+      pylsp = {
+        plugins = {
+          pyflakes = { enabled = false },
+          pycodestyle = { enabled = false },
+          mccabe = { enabled = false },
+          pylint = { enabled = false },
+          yapf = { enabled = false },
+          autopep8 = { enabled = false },
+          pydocstyle = { enabled = false },
+          flake8 = { enabled = false },
+        }
+      }
+    }
   },
   rust_analyzer = {
     server = {

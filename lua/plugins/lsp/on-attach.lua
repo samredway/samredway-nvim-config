@@ -1,49 +1,45 @@
--- Runs when LSP attaches to buffer
--- Setup local key maps and commands
+-- [[ Configure LSP ]]
+--  This function gets run when an LSP connects to a particular buffer.
+local on_attach = function(_, bufnr)
+    -- In this case, we create a function that lets us more easily define mappings specific
+    -- for LSP related items. It sets the mode, buffer and description for us each time.
+    local nmap = function(keys, func, desc)
+        if desc then
+            desc = 'LSP: ' .. desc
+        end
 
-local augroup = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true })
-
-return {
-  group = augroup,
-  callback = function(event)
-    local map = function(keys, func, desc)
-      vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+        vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
     end
 
-    map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-    map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-    map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-    map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-    map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-    map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-    map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-    map('K', vim.lsp.buf.hover, 'Hover Documentation')
-    map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+    nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+    nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-    local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if client and client.server_capabilities.documentHighlightProvider then
-      local highlight_group = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+    nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+    nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+    nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+    nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
-      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-        buffer = event.buf,
-        group = highlight_group,
-        callback = vim.lsp.buf.document_highlight,
-      })
+    -- See `:help K` for why this keymap
+    nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+    nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
-      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-        buffer = event.buf,
-        group = highlight_group,
-        callback = vim.lsp.buf.clear_references,
-      })
+    -- Lesser used LSP functionality
+    nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+    nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+    nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+    nmap('<leader>wl', function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, '[W]orkspace [L]ist Folders')
 
-      vim.api.nvim_create_autocmd('LspDetach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
-        callback = function(event2)
-          vim.lsp.buf.clear_references()
-          vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
-        end,
-      })
+    if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
+        vim.diagnostic.disable()
     end
-  end,
-}
+    -- Create a command `:Format` local to the LSP buffer
+    vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+        vim.lsp.buf.format()
+    end, { desc = 'Format current buffer with LSP' })
+end
+
+return on_attach
