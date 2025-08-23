@@ -6,32 +6,48 @@ vim.bo.softtabstop = 2
 local jdtls = require('jdtls')
 local jdtls_setup = require('jdtls.setup')
 
--- Find root using Maven/Gradle/Git markers
+-- Root detection
 local root_markers = { 'gradlew', 'mvnw', 'pom.xml', 'build.gradle', '.git' }
 local root_dir = jdtls_setup.find_root(root_markers)
 if not root_dir then return end
 
--- Create per-project workspace folder
+-- Per-project workspace
 local project_name = vim.fn.fnamemodify(root_dir, ':t')
 local workspace_dir = vim.fn.stdpath('data') .. '/jdtls-workspaces/' .. project_name
 
--- Configure JDTLS
+-- Path to Lombok jar
+local lombok_path = vim.fn.expand("~/.local/share/lombok/lombok.jar")
+
+-- Key mappings
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+local ok_cmp, cmp_caps = pcall(require, "cmp_nvim_lsp")
+if ok_cmp then
+  capabilities = cmp_caps.default_capabilities(capabilities)
+end
+
+local on_attach = function(_, bufnr)
+  local map = function(lhs, rhs) vim.keymap.set('n', lhs, rhs, { buffer = bufnr }) end
+  map('gd', vim.lsp.buf.definition)
+  map('gr', vim.lsp.buf.references)
+  map('K',  vim.lsp.buf.hover)
+  map('<leader>rn', vim.lsp.buf.rename)   -- rename mapping
+end
+
+-- Final config
 local config = {
   cmd = {
-    'jdtls',
+    vim.fn.expand("~/.local/share/nvim/mason/bin/jdtls"),
     '-data', workspace_dir,
   },
   root_dir = root_dir,
+  cmd_env = {
+    JAVA_TOOL_OPTIONS = '-javaagent:' .. lombok_path,
+  },
   settings = {
     java = {
-      -- Optional: turn off diagnostics
       configuration = {
         runtimes = {
-          -- You can declare JDKs here if you have different ones
-          -- {
-          --   name = "JavaSE-17",
-          --   path = "/path/to/jdk17",
-          -- },
+          -- Add JDKs here if needed
         },
       },
     },
@@ -39,7 +55,8 @@ local config = {
   init_options = {
     bundles = {},
   },
+  capabilities = capabilities,
+  on_attach = on_attach,
 }
 
--- Start or attach to JDTLS
 jdtls.start_or_attach(config)
