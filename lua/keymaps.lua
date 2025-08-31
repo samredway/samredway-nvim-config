@@ -17,6 +17,10 @@ vim.keymap.set('n', '<leader>bd', '<cmd>%bd|e#<cr>', {})
 vim.keymap.set('n', '<C-d>', '<C-d>zz', {})
 vim.keymap.set('n', '<C-u>', '<C-u>zz', {})
 
+-- Resize win blocks of 5
+vim.keymap.set('n', '<leader>>', '<C-w>5>', {})
+vim.keymap.set('n', '<leader><', '<C-w>5<', {})
+
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
