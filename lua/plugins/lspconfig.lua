@@ -1,34 +1,32 @@
 return {
   { -- lsp configuration & plugins
     'neovim/nvim-lspconfig',
-    commit = "4da7247b2b348b4f6cade30a7a7fcb299879d275",
+    commit = '4da7247b2b348b4f6cade30a7a7fcb299879d275',
     dependencies = {
       -- note using `opts = {}` will auto call setup
-      { 'mason-org/mason-lspconfig.nvim',
-        commit = "7f0bf635082bb9b7d2b37766054526a6ccafdb85" },
- 
+      { 'mason-org/mason-lspconfig.nvim', commit = '7f0bf635082bb9b7d2b37766054526a6ccafdb85' },
 
       -- useful status updates for lsp.
       { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
 
       -- `neodev` configures lua lsp for your neovim config, runtime and plugins
       -- used for completion, annotations and signatures of neovim apis
-       'folke/neodev.nvim',
-       'mfussenegger/nvim-lint',
-       'mhartington/formatter.nvim'
+      'folke/neodev.nvim',
+      'mfussenegger/nvim-lint',
+      'mhartington/formatter.nvim',
     },
 
     config = function()
       -- Setup up commands etc
-      local on_attach = require('plugins.lsp.on-attach')
+      local on_attach = require 'plugins.lsp.on-attach'
 
       -- Server configs are in the lsp/servers file
-      local servers = require('plugins.lsp.servers')
+      local servers = require 'plugins.lsp.servers'
 
       -- Setup neovim lua configuration
-      require("neodev").setup({
-          library = { plugins = { "neotest" }, types = true },
-      })
+      require('neodev').setup {
+        library = { plugins = { 'neotest' }, types = true },
+      }
 
       -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -38,20 +36,21 @@ return {
       local mason_lspconfig = require 'mason-lspconfig'
 
       mason_lspconfig.setup {
-          automatic_enable = false,
-          ensure_installed = vim.tbl_keys(servers),
+        automatic_enable = false,
+        ensure_installed = vim.tbl_keys(servers),
       }
 
-      local lspconfig = require("lspconfig")
- 
+      local lspconfig = require 'lspconfig'
+
       for server_name, config in pairs(servers) do
-          lspconfig[server_name].setup {
+        lspconfig[server_name].setup {
           capabilities = capabilities,
           on_attach = on_attach,
           settings = config.settings,
           filetypes = config.filetypes,
+          cmd = config.cmd,
         }
       end
-    end
-  }
+    end,
+  },
 }

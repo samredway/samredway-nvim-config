@@ -8,7 +8,7 @@ return {
   opts = {},
   config = function()
     local ensure = {
-      'isort', 'prettier', 'jdtls'
+      'isort', 'prettier', 'jdtls', 'stylua', 'omnisharp'
       -- never install python tools like black or mypy or flake8 with mason.
       -- If guard cannot find in mason it will look next for what it can access
       -- in your terminal and if you venv is activated that will be your venv mypy

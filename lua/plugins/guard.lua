@@ -8,6 +8,7 @@ return {
   config = function()
     local ft = require 'guard.filetype'
 
+    ft("lua"):fmt("stylua")
     ft('typescript,javascript,typescriptreact'):fmt 'prettier'
     ft('python')
       :fmt('isort')

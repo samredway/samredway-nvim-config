@@ -10,6 +10,7 @@ require('lazy').setup({
   --
   --  This is equivalent to:
   --    require('Comment').setup({})
+  { 'Hoffs/omnisharp-extended-lsp.nvim', lazy = true },
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
@@ -31,9 +32,9 @@ require('lazy').setup({
 
   -- Java LSP
   {
-    "mfussenegger/nvim-jdtls",
-    ft = { "java" },
-  }
+    'mfussenegger/nvim-jdtls',
+    ft = { 'java' },
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
