@@ -3,7 +3,6 @@ return {
   dependencies = {
     'nvimdev/guard-collection',
   },
-  commit = "9a9f00a6f70e5da2ea8379f203fcd45d8a7250cc",
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local ft = require 'guard.filetype'
