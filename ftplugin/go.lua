@@ -1,3 +1,3 @@
-vim.bo.tabstop = 4 -- size of a hard tabstop (ts).
-vim.bo.shiftwidth = 4 -- size of an indentation (sw).
-
+-- Go support is currently disabled. Uncomment these lines to reactivate its indentation settings.
+-- vim.bo.tabstop = 4 -- size of a hard tabstop (ts).
+-- vim.bo.shiftwidth = 4 -- size of an indentation (sw).

@@ -1,3 +1,6 @@
+-- Java support is currently disabled. Uncomment this file and the Java plugin
+-- block in lua/lazy-plugins.lua to reactivate it.
+--[[
 vim.bo.tabstop = 2
 vim.bo.shiftwidth = 2
 vim.bo.expandtab = true
@@ -60,3 +63,4 @@ local config = {
 }
 
 jdtls.start_or_attach(config)
+]]

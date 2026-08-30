@@ -4,10 +4,12 @@ return {
     build = ':TSUpdate',
     opts = {
       ensure_installed = {
+        -- Python, Lua, Terraform, HTML, JavaScript, and TypeScript are active.
+        -- Uncomment any parser below to reactivate another language.
         'bash',
-        'c',
-        'cpp',
-        'css',
+        -- 'c',
+        -- 'cpp',
+        -- 'css',
         'diff',
         'gitignore',
         'hcl',
@@ -20,7 +22,7 @@ return {
         'vim',
         'vimdoc',
         'python',
-        'rust',
+        -- 'rust',
         'tsx',
         'typescript',
         'yaml',
@@ -32,9 +34,10 @@ return {
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        -- Uncomment both Ruby entries here and below to reactivate its special highlighting.
+        additional_vim_regex_highlighting = {},
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = {} },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
