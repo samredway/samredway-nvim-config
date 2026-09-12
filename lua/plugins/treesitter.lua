@@ -1,9 +1,11 @@
 return {
-  { -- Highlight, edit, and navigate code
+  {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
     build = ':TSUpdate',
     opts = {
-      ensure_installed = {
+      parsers = {
         -- Python, Lua, Terraform, HTML, JavaScript, and TypeScript are active.
         -- Uncomment any parser below to reactivate another language.
         'bash',
@@ -27,33 +29,57 @@ return {
         'typescript',
         'yaml',
       },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = {
-        enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        -- Uncomment both Ruby entries here and below to reactivate its special highlighting.
-        additional_vim_regex_highlighting = {},
-      },
-      indent = { enable = true, disable = {} },
     },
     config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+      local treesitter = require 'nvim-treesitter'
+      treesitter.setup {}
 
-      -- Prefer git instead of curl in order to improve connectivity in some environments
-      require('nvim-treesitter.install').prefer_git = true
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
+      local function enable(buf)
+        if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= '' then
+          return
+        end
+        local lang = vim.treesitter.language.get_lang(vim.bo[buf].filetype)
+        if lang and pcall(vim.treesitter.start, buf, lang) then
+          vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
+      end
 
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+      local pending = {}
+      local available = {}
+      for _, lang in ipairs(treesitter.get_available()) do
+        available[lang] = true
+      end
+
+      local function install(languages)
+        -- Parser compilation requires the separately installed CLI.
+        if vim.fn.executable('tree-sitter') ~= 1 then
+          return
+        end
+        treesitter.install(languages):await(function()
+          vim.schedule(function()
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+              enable(buf)
+            end
+          end)
+        end)
+      end
+
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('UserTreesitter', { clear = true }),
+        callback = function(args)
+          enable(args.buf)
+          local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+          if lang and available[lang] and not pending[lang] then
+            pending[lang] = true
+            install { lang }
+          end
+        end,
+      })
+
+      for _, lang in ipairs(opts.parsers) do
+        pending[lang] = true
+      end
+      install(opts.parsers)
     end,
   },
 }
--- vim: ts=2 sts=2 sw=2 et

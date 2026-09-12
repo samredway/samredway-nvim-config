@@ -10,17 +10,30 @@ return {
     -- Keep Lua formatting active because Neovim's configuration is written in Lua.
     ft('lua'):fmt 'stylua'
     ft('typescript,javascript,typescriptreact'):fmt 'prettier'
-    ft('python')
-      :fmt('isort')
-      -- Never install black or mypy with mason or that will get preference
-      -- over the version accessibly from your system/env. Instead make sure
-      -- you activate your virtual env before you open nvim and that version
-      -- will be used (otherwise it will be the system version)
-      -- Check the version being used by doing ':! which mypy'
-      :append(
-        'black'
-      )
-      :lint 'mypy'
+    local function setup_python()
+      ft('python')
+        :fmt('isort')
+        -- Never install black or mypy with mason or that will get preference
+        -- over the version accessibly from your system/env. Instead make sure
+        -- you activate your virtual env before you open nvim and that version
+        -- will be used (otherwise it will be the system version)
+        -- Check the version being used by doing ':! which mypy'
+        :append(
+          'black'
+        )
+        :lint 'mypy'
+    end
+
+    if vim.bo.filetype == 'python' then
+      setup_python()
+    else
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'python',
+        once = true,
+        callback = setup_python,
+        desc = 'Configure Python formatters and linter when needed',
+      })
+    end
     -- apparently cant chain this with flake8 so that gets done by the lsp
     -- ft('go'):fmt('gofmt')
     -- ft('cpp'):fmt('clang-format')
