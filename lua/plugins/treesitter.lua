@@ -9,9 +9,9 @@ return {
         -- Python, Lua, Terraform, HTML, JavaScript, and TypeScript are active.
         -- Uncomment any parser below to reactivate another language.
         'bash',
-        -- 'c',
-        -- 'cpp',
-        -- 'css',
+        'c',
+        'cpp',
+        'css',
         'diff',
         'gitignore',
         'hcl',
@@ -24,7 +24,7 @@ return {
         'vim',
         'vimdoc',
         'python',
-        -- 'rust',
+        'rust',
         'tsx',
         'typescript',
         'yaml',
@@ -33,6 +33,11 @@ return {
     config = function(_, opts)
       local treesitter = require 'nvim-treesitter'
       treesitter.setup {}
+
+      -- The main branch ships its queries in runtime/ rather than at the
+      -- plugin root. Make them visible even when parsers predate the migration.
+      local plugin = require('lazy.core.config').plugins['nvim-treesitter']
+      vim.opt.runtimepath:prepend(plugin.dir .. '/runtime')
 
       local function enable(buf)
         if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= '' then
