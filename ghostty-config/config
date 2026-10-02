@@ -1,0 +1,20 @@
+# Cool navy background with soft blue, purple, and green accents.
+theme = TokyoNight
+
+# Classic Monaco font with a slightly larger size.
+font-family = Monaco
+font-size = 20
+
+# Room around the text and a title bar that blends into the terminal.
+window-padding-x = 14
+window-padding-y = 12
+macos-titlebar-style = transparent
+window-decoration = auto
+
+# Subtle frosted background, with enough opacity to keep text readable.
+background-opacity = 0.96
+background-blur = true
+
+cursor-style = block
+cursor-style-blink = false
+shell-integration = detect
